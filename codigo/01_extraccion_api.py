@@ -1,7 +1,7 @@
 # Nombres y apellidos: ASTETE ROSALES GRAYCE NICOL
 # Código de matrícula: 2024200482A
 # Tema N.º 95 del temario: Criptoactivos como instrumento alternativo: formación de precios y volatilidad
-# Fecha de extracción: 2026-11-22
+# Fecha de extracción: 2026-11-21
 """
 01_extraccion_api.py — Vía 1 (API).
 
