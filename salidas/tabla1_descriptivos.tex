@@ -1,0 +1,21 @@
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Tabla 1. Estadísticos descriptivos de los retornos logarítmicos diarios}
+\label{tab:tabla1_descriptivos}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccccccccc}
+\toprule
+\textbf{Serie (retorno diario, \%)} & \textbf{N} & \textbf{Media} & \textbf{Desv. est.} & \textbf{Mínimo} & \textbf{Máximo} & \textbf{VaR 5 \% histórico} & \textbf{Días con |r| > 5 \%} & \textbf{Asimetría} & \textbf{Curtosis exceso} & \textbf{Jarque-Bera} & \textbf{p (JB)} & \textbf{Vol. anual (\%)} \\
+\midrule
+Bitcoin & 2\,921 & 0.064 & 3.425 & -46.473 & 17.182 & -5.233 & 327 & -0.962 & 14.644 & 26\,549.344 & 0.000 & 65.437 \\
+Ethereum & 2\,921 & 0.046 & 4.498 & -55.073 & 23.070 & -6.970 & 539 & -0.857 & 10.979 & 15\,028.173 & 0.000 & 85.929 \\
+S\&P 500 & 2\,010 & 0.046 & 1.238 & -12.765 & 9.089 & -1.830 & 14 & -0.654 & 14.734 & 18\,324.964 & 0.000 & 19.656 \\
+Oro & 2\,012 & 0.059 & 1.007 & -5.913 & 5.778 & -1.624 & 4 & -0.304 & 3.843 & 1\,268.831 & 0.000 & 15.986 \\
+IGBVL (BVL) & 2\,024 & 0.038 & 1.108 & -11.009 & 5.874 & -1.524 & 10 & -0.909 & 10.743 & 10\,012.639 & 0.000 & 17.593 \\
+Tipo de cambio PEN/USD & 1\,994 & 0.002 & 0.385 & -1.956 & 3.298 & -0.595 & 0 & 0.123 & 6.449 & 3\,460.089 & 0.000 & 6.110 \\
+Índice del dólar & 1\,994 & 0.004 & 0.315 & -1.910 & 1.875 & -0.499 & 0 & 0.033 & 2.498 & 518.634 & 0.000 & 4.995 \\
+\bottomrule
+\end{tabular}}
+\par\vspace{3pt}\parbox{\textwidth}{\scriptsize \textit{Nota.} Retornos logarítmicos ×100 entre observaciones consecutivas con dato. VaR 5 \%: percentil 5 de la distribución empírica. Volatilidad anualizada con √365 para criptoactivos (cotizan todos los días) y √252 para los demás. Fuente: elaboración propia con datos de Yahoo Finance, Coin Metrics, BCRPData (BCRP) y FRED (Fed de St. Louis), 2018-2025.}
+\end{table}

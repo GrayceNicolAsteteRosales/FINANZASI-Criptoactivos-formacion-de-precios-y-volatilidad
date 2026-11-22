@@ -1,0 +1,30 @@
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Tabla 2. Prueba de Dickey-Fuller aumentada}
+\label{tab:tabla2_adf}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Variable} & \textbf{Transformación} & \textbf{Estadístico ADF} & \textbf{p} & \textbf{Rezagos (AIC)} & \textbf{N} & \textbf{Conclusión (5 \%)} \\
+\midrule
+ln Bitcoin & Nivel & -0.573 & 0.877 & 8 & 2\,913 & Raíz unitaria \\
+ln Bitcoin & Primera diferencia & -19.067 & 0.000 & 7 & 2\,913 & Estacionaria \\
+ln S\&P 500 & Nivel & -0.367 & 0.915 & 9 & 2\,001 & Raíz unitaria \\
+ln S\&P 500 & Primera diferencia & -14.149 & 0.000 & 8 & 2\,001 & Estacionaria \\
+ln Oro & Nivel & 1.954 & 0.999 & 7 & 2\,005 & Raíz unitaria \\
+ln Oro & Primera diferencia & -19.175 & 0.000 & 6 & 2\,005 & Estacionaria \\
+ln IGBVL & Nivel & -0.043 & 0.955 & 12 & 2\,012 & Raíz unitaria \\
+ln IGBVL & Primera diferencia & -11.239 & 0.000 & 11 & 2\,012 & Estacionaria \\
+ln TC PEN/USD & Nivel & -1.827 & 0.367 & 2 & 1\,992 & Raíz unitaria \\
+ln TC PEN/USD & Primera diferencia & -30.567 & 0.000 & 1 & 1\,992 & Estacionaria \\
+VIX & Nivel & -5.219 & 0.000 & 9 & 2\,028 & Estacionaria \\
+VIX & Primera diferencia & -16.213 & 0.000 & 8 & 2\,028 & Estacionaria \\
+UST10 (\%) & Nivel & -0.675 & 0.853 & 2 & 1\,996 & Raíz unitaria \\
+UST10 (\%) & Primera diferencia & -33.493 & 0.000 & 1 & 1\,996 & Estacionaria \\
+ln Volumen BTC & Nivel & -2.038 & 0.270 & 28 & 2\,893 & Raíz unitaria \\
+ln Volumen BTC & Primera diferencia & -13.567 & 0.000 & 28 & 2\,892 & Estacionaria \\
+\bottomrule
+\end{tabular}}
+\par\vspace{3pt}\parbox{\textwidth}{\scriptsize \textit{Nota.} H0: la serie tiene raíz unitaria. Regresión con constante; rezagos elegidos por AIC. Fuente: elaboración propia con datos de Yahoo Finance, Coin Metrics, BCRPData (BCRP) y FRED (Fed de St. Louis), 2018-2025.}
+\end{table}

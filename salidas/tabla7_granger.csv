@@ -1,0 +1,6 @@
+﻿Rezagos;F: volumen → retorno;p volumen → retorno;Decisión (5 %);F: retorno → volumen;p retorno → volumen;Decisión (5 %) 
+1;0,078;0,78;No rechaza H0;0,1967;0,6574;No rechaza H0
+2;0,7255;0,4841;No rechaza H0;4,6977;0,0092;Rechaza H0
+3;0,7032;0,5501;No rechaza H0;3,4488;0,016;Rechaza H0
+4;0,7073;0,5869;No rechaza H0;3,3668;0,0093;Rechaza H0
+5;0,9066;0,4757;No rechaza H0;4,6779;0,0003;Rechaza H0

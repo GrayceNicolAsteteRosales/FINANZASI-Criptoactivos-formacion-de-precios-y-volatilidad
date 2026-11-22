@@ -1,0 +1,17 @@
+﻿Variable;Transformación;Estadístico ADF;p;Rezagos (AIC);N;Conclusión (5 %)
+ln Bitcoin;Nivel;-0,573;0,877;8;2913;Raíz unitaria
+ln Bitcoin;Primera diferencia;-19,067;0,0;7;2913;Estacionaria
+ln S&P 500;Nivel;-0,367;0,915;9;2001;Raíz unitaria
+ln S&P 500;Primera diferencia;-14,149;0,0;8;2001;Estacionaria
+ln Oro;Nivel;1,954;0,999;7;2005;Raíz unitaria
+ln Oro;Primera diferencia;-19,175;0,0;6;2005;Estacionaria
+ln IGBVL;Nivel;-0,043;0,955;12;2012;Raíz unitaria
+ln IGBVL;Primera diferencia;-11,239;0,0;11;2012;Estacionaria
+ln TC PEN/USD;Nivel;-1,827;0,367;2;1992;Raíz unitaria
+ln TC PEN/USD;Primera diferencia;-30,567;0,0;1;1992;Estacionaria
+VIX;Nivel;-5,219;0,0;9;2028;Estacionaria
+VIX;Primera diferencia;-16,213;0,0;8;2028;Estacionaria
+UST10 (%);Nivel;-0,675;0,853;2;1996;Raíz unitaria
+UST10 (%);Primera diferencia;-33,493;0,0;1;1996;Estacionaria
+ln Volumen BTC;Nivel;-2,038;0,27;28;2893;Raíz unitaria
+ln Volumen BTC;Primera diferencia;-13,567;0,0;28;2892;Estacionaria

@@ -1,0 +1,20 @@
+Muestra conjunta (días con todas las variables): 1911 observaciones, 2018-01-04 a 2025-12-31
+Bitcoin: vol. anual 65.4 %, curtosis exceso 14.64, asimetría -0.96, mínimo -46.47 %, VaR 5 % -5.23 %
+Ethereum: vol. anual 85.9 %, curtosis exceso 10.98, asimetría -0.86, mínimo -55.07 %, VaR 5 % -6.97 %
+S&P 500: vol. anual 19.7 %, curtosis exceso 14.73, asimetría -0.65, mínimo -12.77 %, VaR 5 % -1.83 %
+Oro: vol. anual 16.0 %, curtosis exceso 3.84, asimetría -0.30, mínimo -5.91 %, VaR 5 % -1.62 %
+IGBVL (BVL): vol. anual 17.6 %, curtosis exceso 10.74, asimetría -0.91, mínimo -11.01 %, VaR 5 % -1.52 %
+Tipo de cambio PEN/USD: vol. anual 6.1 %, curtosis exceso 6.45, asimetría 0.12, mínimo -1.96 %, VaR 5 % -0.60 %
+Índice del dólar: vol. anual 5.0 %, curtosis exceso 2.50, asimetría 0.03, mínimo -1.91 %, VaR 5 % -0.50 %
+MCO 2018-2025: beta S&P 500 = 0.340 (p = 0.0182), beta oro = 0.194 (p = 0.0502), R² aj. = 0.119
+MCO 2018-2021: beta S&P 500 = -0.102 (p = 0.6111), R² aj. = 0.101
+MCO 2022-2025: beta S&P 500 = 0.891 (p = 0.0000), R² aj. = 0.180
+BTC GARCH: α = 0.0750, β = 0.9250, γ = nan, persistencia 1.00000, ν = 3.14, AIC = 14377.02
+BTC GJR: α = 0.0728, β = 0.9237, γ = 0.0069, persistencia 1.00000, ν = 3.13, AIC = 14378.85
+S&P 500 GARCH: α = 0.1688, β = 0.8166, γ = nan, persistencia 0.98540, ν = 5.73, AIC = 5459.03
+S&P 500 GJR: α = 0.0000, β = 0.8398, γ = 0.2613, persistencia 0.97047, ν = 6.00, AIC = 5392.92
+IGBVL GARCH: α = 0.0744, β = 0.9064, γ = nan, persistencia 0.98075, ν = 4.67, AIC = 5443.70
+IGBVL GJR: α = 0.0450, β = 0.9192, γ = 0.0379, persistencia 0.98314, ν = 4.65, AIC = 5441.67
+Granger (5 rezagos): p volumen→retorno = 0.4757; p retorno→volumen = 0.0003
+Máxima caída del BTC desde su máximo previo: -81.5 % (15/12/2018)
+Índice base 100 al cierre de 2025: Bitcoin 576, S&P 500 252, Oro 330, IGBVL 214
