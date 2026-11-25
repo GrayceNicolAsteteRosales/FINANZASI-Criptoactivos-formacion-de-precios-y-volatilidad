@@ -1,9 +1,9 @@
 # Criptoactivos como instrumento alternativo: formación de precios y volatilidad
 
-**Autora:** ASTETE ROSALES GRAYCE NICOL · **Código:** 2024200482A
-**Curso:** Finanzas I (055D) · Escuela Profesional de Economía · UNCP · 2026-II · Docente: Dr. Ciro Iván Machacuay Meza
-**Repositorio:** https://github.com/GrayceNicolAsteteRosales/FINANZASI-Criptoactivos-formacion-de-precios-y-volatilidad
-**Fecha de corte:** 2025-12-31 · **Python:** 3.13.18
+- **Autora:** ASTETE ROSALES GRAYCE NICOL · **Código:** 2024200482A
+- **Curso:** Finanzas I (055D) · Escuela Profesional de Economía · UNCP · 2026-II · Docente: Dr. Ciro Iván Machacuay Meza
+- **Repositorio:** https://github.com/GrayceNicolAsteteRosales/FINANZASI-Criptoactivos-formacion-de-precios-y-volatilidad
+- **Fecha de corte:** 2025-12-31 · **Python:** 3.13.18
 
 Base de datos y código reproducible del artículo de la Unidad II. Se analiza la formación de precios y la
 volatilidad del Bitcoin frente a activos tradicionales (S&P 500, oro), al mercado peruano (IGBVL, tipo de
@@ -106,3 +106,26 @@ crudos originales se conservan en `datos_crudos/`.
 - Yahoo. (2026). *Yahoo Finance* [Base de datos]. Recuperado el 21 de noviembre de 2026, de https://finance.yahoo.com/
 
 Uso académico. Los datos pertenecen a sus respectivas fuentes.
+
+## Cómo reproducir los resultados
+
+1. Clonar o descargar este repositorio y abrir una terminal en la carpeta del proyecto.
+2. Instalar las librerías: `pip install -r requirements.txt`
+3. Copiar `.env.example` como `.env` (ninguna fuente usada requiere clave).
+4. Ejecutar en orden:
+   - `python codigo/01_extraccion_api.py` (Yahoo Finance, BCRPData y Coin Metrics, vía API)
+   - `python codigo/02_scraping_web.py` (FRED, descarga programática con revisión de robots.txt)
+   - `python codigo/03_limpieza_datos.py` (integración, control de calidad y hash SHA-256)
+   - `python codigo/04_analisis.py` (tablas, figuras y dashboard en `/salidas`)
+5. Comparar el hash de `salidas/hash_sha256.txt` con el indicado en este README.
+
+Nota: una nueva extracción puede diferir si las fuentes revisan sus datos históricos.
+La base entregada corresponde a la extracción registrada en `log_ejecucion.txt`.
+
+## Historial de versiones
+
+| Fecha | Cambio |
+|---|---|
+| 2026-11-21 | Extracción de datos (vías API y descarga programática), limpieza y análisis |
+| 2026-11-22 | Documentación: README, diccionario de variables, requirements, .env.example e incidencias de fuente |
+| 2026-11-25 | Verificación de datos contra las fuentes originales e instrucciones de reproducción |
