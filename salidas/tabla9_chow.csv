@@ -1,0 +1,4 @@
+﻿Prueba;Estadístico;Grados de libertad;p;Decisión (5 %)
+Chow clásico (todos los coeficientes);3,0347;F(8, 1895);0,0022;Hay cambio estructural
+Wald robusto Newey-West (D e interacciones);2,935;F(8, 1895);0,0029;Hay cambio estructural
+Cambio en la pendiente del S&P 500 (D × S&P 500);0,9933;coeficiente (t robusta);0,0001;Hay cambio estructural

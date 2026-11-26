@@ -16,5 +16,9 @@ S&P 500 GJR: α = 0.0000, β = 0.8398, γ = 0.2613, persistencia 0.97047, ν = 6
 IGBVL GARCH: α = 0.0744, β = 0.9064, γ = nan, persistencia 0.98075, ν = 4.67, AIC = 5443.70
 IGBVL GJR: α = 0.0450, β = 0.9192, γ = 0.0379, persistencia 0.98314, ν = 4.65, AIC = 5441.67
 Granger (5 rezagos): p volumen→retorno = 0.4757; p retorno→volumen = 0.0003
+Chow (quiebre 01/01/2022): F = 3.035 (p = 0.0022); Wald robusto F = 2.935 (p = 0.0029); cambio pendiente S&P 500 = 0.993 (p = 0.0001)
+Portafolio 100 % BVL (2018-2025, soles): rend. anual 9.98 %, vol. anual 17.59 %, VaR 5 % -1.52 %, caída máx. -37.08 %, S/ 100 -> S/ 214
+Portafolio 95 % BVL + 5 % BTC (2018-2025, soles): rend. anual 11.77 %, vol. anual 17.62 %, VaR 5 % -1.55 %, caída máx. -35.01 %, S/ 100 -> S/ 243
+Portafolio 90 % BVL + 10 % BTC (2018-2025, soles): rend. anual 13.47 %, vol. anual 18.21 %, VaR 5 % -1.64 %, caída máx. -34.72 %, S/ 100 -> S/ 274
 Máxima caída del BTC desde su máximo previo: -81.5 % (15/12/2018)
 Índice base 100 al cierre de 2025: Bitcoin 576, S&P 500 252, Oro 330, IGBVL 214

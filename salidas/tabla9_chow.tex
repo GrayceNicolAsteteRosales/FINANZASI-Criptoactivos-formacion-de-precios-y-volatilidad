@@ -1,0 +1,17 @@
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Tabla 9. Pruebas de cambio estructural en enero de 2022}
+\label{tab:tabla9_chow}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Prueba} & \textbf{Estadístico} & \textbf{Grados de libertad} & \textbf{p} & \textbf{Decisión (5 \%)} \\
+\midrule
+Chow clásico (todos los coeficientes) & 3.0347 & F(8, 1895) & 0.0022 & Hay cambio estructural \\
+Wald robusto Newey-West (D e interacciones) & 2.9350 & F(8, 1895) & 0.0029 & Hay cambio estructural \\
+Cambio en la pendiente del S\&P 500 (D × S\&P 500) & 0.9933 & coeficiente (t robusta) & 0.0001 & Hay cambio estructural \\
+\bottomrule
+\end{tabular}}
+\par\vspace{3pt}\parbox{\textwidth}{\scriptsize \textit{Nota.} H0: los coeficientes de la ecuación de la Tabla 4 son iguales en 2018-2021 y 2022-2025. D = 1 desde el 01/01/2022. La prueba robusta usa errores Newey-West con 5 rezagos; la última fila es el cambio estimado en la sensibilidad del BTC al S\&P 500. N = 1911. Fuente: elaboración propia con datos de Yahoo Finance, Coin Metrics, BCRPData (BCRP) y FRED (Fed de St. Louis), 2018-2025.}
+\end{table}
