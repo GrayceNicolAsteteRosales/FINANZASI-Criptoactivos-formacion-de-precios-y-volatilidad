@@ -11,10 +11,11 @@ Salidas (en /salidas):
           más el libro consolidado tablas_articulo.xlsx (una hoja por tabla y un índice).
     tabla1_descriptivos · tabla2_adf · tabla3_correlaciones · tabla3b_matriz_correlaciones
     tabla4_mco_newey_west · tabla5_vif · tabla6_garch · tabla7_granger · tabla8_resumen_anual
+    tabla9_chow · tabla10_portafolio
   Figuras (.png a 300 dpi y .pdf):
     figura1_precio_capitalizacion · figura2_desempeno_acumulado · figura3_volatilidad_realizada
     figura4_correlacion_movil · figura5_volatilidad_condicional · figura6_distribucion_retornos
-    figura7_curva_impacto_noticias · figura8_matrices_correlacion
+    figura7_curva_impacto_noticias · figura8_matrices_correlacion · figura9_portafolio
   dashboard_criptoactivos.html (tablero interactivo; se abre en cualquier navegador, sin internet)
   resultados_clave.txt (cifras que se citan en el texto del artículo)
 Uso: desde la carpeta del proyecto ->  python codigo/04_analisis.py
@@ -560,6 +561,99 @@ t8 = pd.DataFrame({
 guardar_tabla(t8, "tabla8_resumen_anual", "Tabla 8. Evolución anual del mercado del Bitcoin, 2018-2025",
               "Capitalización de mercado de Coin Metrics (CapMrktCurUSD); precio y volumen de Yahoo Finance; "
               "precio en soles con el último tipo de cambio interbancario del año (BCRP). " + FUENTE_GENERAL, decimales=2)
+# ---------------------------------------------------------------------------
+# 12b. Tabla 9: prueba de Chow de cambio estructural en enero de 2022
+# ---------------------------------------------------------------------------
+# ¿La ecuación del retorno del BTC (Tabla 4) es distinta antes y después del 01/01/2022?
+# (a) Chow clásico: compara la suma de residuos al cuadrado de la regresión conjunta con la de las
+#     dos submuestras. (b) Versión robusta: regresión con una dummy D (1 desde 2022) e interacciones
+#     D × regresor, con errores Newey-West; se prueba con Wald que todos los términos con D valen cero.
+#     (c) Solo el cambio en la pendiente del S&P 500 (prueba t robusta de D × S&P 500).
+X_total = sm.add_constant(conjunta[REGRESORES])
+k_param = X_total.shape[1]                                   # 8 parámetros: constante + 7 regresores
+n_total = len(conjunta)
+ssr_conjunta = sm.OLS(conjunta["BTC"], X_total).fit().ssr
+ssr_1 = sm.OLS(periodos["2018-2021"]["BTC"], sm.add_constant(periodos["2018-2021"][REGRESORES])).fit().ssr
+ssr_2 = sm.OLS(periodos["2022-2025"]["BTC"], sm.add_constant(periodos["2022-2025"][REGRESORES])).fit().ssr
+gl_den = n_total - 2 * k_param
+f_chow = ((ssr_conjunta - ssr_1 - ssr_2) / k_param) / ((ssr_1 + ssr_2) / gl_den)
+p_chow = stats.f.sf(f_chow, k_param, gl_den)
+
+dummy = (conjunta.index >= inicio2).astype(float)
+X_quiebre = X_total.copy()
+X_quiebre["D"] = dummy
+for variable in REGRESORES:
+    X_quiebre[f"D x {variable}"] = dummy * conjunta[variable]
+res_quiebre = sm.OLS(conjunta["BTC"], X_quiebre).fit(cov_type="HAC", cov_kwds={"maxlags": REZAGOS_NEWEY_WEST})
+terminos_d = [c for c in X_quiebre.columns if c.startswith("D")]
+R = np.zeros((len(terminos_d), X_quiebre.shape[1]))
+for i, c in enumerate(terminos_d):
+    R[i, list(X_quiebre.columns).index(c)] = 1
+wald = res_quiebre.f_test(R)
+f_wald, p_wald = float(np.squeeze(wald.fvalue)), float(np.squeeze(wald.pvalue))
+coef_dsp, p_dsp = res_quiebre.params["D x S&P 500"], res_quiebre.pvalues["D x S&P 500"]
+
+t9 = pd.DataFrame([
+    {"Prueba": "Chow clásico (todos los coeficientes)", "Estadístico": f_chow,
+     "Grados de libertad": f"F({k_param}, {gl_den})", "p": p_chow},
+    {"Prueba": "Wald robusto Newey-West (D e interacciones)", "Estadístico": f_wald,
+     "Grados de libertad": f"F({len(terminos_d)}, {int(res_quiebre.df_resid)})", "p": p_wald},
+    {"Prueba": "Cambio en la pendiente del S&P 500 (D × S&P 500)", "Estadístico": coef_dsp,
+     "Grados de libertad": "coeficiente (t robusta)", "p": p_dsp},
+])
+t9["Decisión (5 %)"] = np.where(t9["p"] < 0.05, "Hay cambio estructural", "Sin evidencia de cambio")
+guardar_tabla(t9, "tabla9_chow", "Tabla 9. Pruebas de cambio estructural en enero de 2022",
+              f"H0: los coeficientes de la ecuación de la Tabla 4 son iguales en 2018-2021 y 2022-2025. D = 1 desde el "
+              f"{inicio2:%d/%m/%Y}. La prueba robusta usa errores Newey-West con {REZAGOS_NEWEY_WEST} rezagos; la última "
+              f"fila es el cambio estimado en la sensibilidad del BTC al S&P 500. N = {n_total}. " + FUENTE_GENERAL,
+              decimales=4)
+CLAVE.append(f"Chow (quiebre 01/01/2022): F = {f_chow:.3f} (p = {p_chow:.4f}); Wald robusto F = {f_wald:.3f} "
+             f"(p = {p_wald:.4f}); cambio pendiente S&P 500 = {coef_dsp:.3f} (p = {p_dsp:.4f})")
+
+# ---------------------------------------------------------------------------
+# 12c. Tabla 10: portafolio de un inversionista peruano en soles (BVL con y sin Bitcoin)
+# ---------------------------------------------------------------------------
+# Días hábiles de la BVL con dato del IGBVL y del tipo de cambio; el BTC se convierte a soles con el
+# tipo de cambio del mismo día. Pesos fijos rebalanceados cada día. Rendimientos simples.
+PESOS_BTC = [0.0, 0.05, 0.10]
+p_sol = d[["igbvl_indice", "tc_pen_usd", "btc_precio_usd"]].dropna()
+r_bvl = p_sol["igbvl_indice"].pct_change()
+r_btc_sol = (p_sol["btc_precio_usd"] * p_sol["tc_pen_usd"]).pct_change()
+rendimientos = pd.DataFrame({
+    f"{100 - 100 * w:.0f} % BVL + {100 * w:.0f} % BTC" if w > 0 else "100 % BVL": (1 - w) * r_bvl + w * r_btc_sol
+    for w in PESOS_BTC}).dropna()
+valor_portafolio = 100 * (1 + rendimientos).cumprod()
+
+
+def indicadores_portafolio(r):
+    """Rendimiento y volatilidad anualizados, razón rendimiento/riesgo, VaR 5 % diario y caída máxima."""
+    anios = (r.index[-1] - r.index[0]).days / 365.25
+    dias_por_anio = len(r) / anios
+    valor = (1 + r).cumprod()
+    rend = valor.iloc[-1] ** (1 / anios) - 1
+    vol = r.std() * np.sqrt(dias_por_anio)
+    return {"Rend. anual (%)": 100 * rend, "Volatilidad anual (%)": 100 * vol, "Rend./riesgo": rend / vol,
+            "VaR 5 % diario (%)": 100 * r.quantile(0.05), "Caída máxima (%)": 100 * (valor / valor.cummax() - 1).min(),
+            "Valor final de S/ 100": 100 * valor.iloc[-1]}
+
+
+filas = []
+for etiqueta, (ini, fin) in {"2018-2025": (FECHA_INICIO, FECHA_CORTE), "2018-2021": (FECHA_INICIO, CORTE_SUBPERIODO),
+                             "2022-2025": (inicio2, FECHA_CORTE)}.items():
+    for portafolio in rendimientos.columns:
+        filas.append({"Periodo": etiqueta, "Portafolio": portafolio,
+                      **indicadores_portafolio(rendimientos.loc[ini:fin, portafolio])})
+t10 = pd.DataFrame(filas)
+guardar_tabla(t10, "tabla10_portafolio", "Tabla 10. Portafolio de un inversionista peruano en soles: BVL con y sin Bitcoin",
+              f"Rendimientos simples diarios en soles en {len(rendimientos)} días hábiles de la BVL; el BTC se convierte "
+              f"con el tipo de cambio interbancario del mismo día (BCRP). Pesos fijos rebalanceados diariamente; sin costos "
+              f"de transacción. Rendimiento anual compuesto; volatilidad anualizada según los días hábiles por año. "
+              + FUENTE_GENERAL, decimales=2)
+for _, f in t10[t10["Periodo"] == "2018-2025"].iterrows():
+    CLAVE.append(f"Portafolio {f['Portafolio']} (2018-2025, soles): rend. anual {f['Rend. anual (%)']:.2f} %, "
+                 f"vol. anual {f['Volatilidad anual (%)']:.2f} %, VaR 5 % {f['VaR 5 % diario (%)']:.2f} %, "
+                 f"caída máx. {f['Caída máxima (%)']:.2f} %, S/ 100 -> S/ {f['Valor final de S/ 100']:.0f}")
+
 guardar_libro_consolidado()
 
 # ---------------------------------------------------------------------------
@@ -782,6 +876,26 @@ barra.ax.tick_params(labelsize=7)
 guardar_figura(fig, "figura8_matrices_correlacion",
                "Fuente: elaboración propia con datos de Yahoo Finance, BCRPData y FRED. Correlaciones de Pearson de los "
                "retornos diarios en la muestra conjunta de días hábiles.")
+
+# Figura 9: valor de S/ 100 invertidos en los tres portafolios del inversionista peruano
+COLOR_PORTAFOLIO = [AMARILLO, VERDE_AGUA, AZUL]
+LINEA_PORTAFOLIO = [(0, (6, 1.5, 1.2, 1.5)), (0, (5, 1.5)), "-"]
+fig, eje = plt.subplots(figsize=(ANCHO, 3.3))
+marcar_subperiodos(eje)
+for color, linea, portafolio in zip(COLOR_PORTAFOLIO, LINEA_PORTAFOLIO, valor_portafolio.columns):
+    eje.plot(valor_portafolio.index, valor_portafolio[portafolio], color=color, linestyle=linea, linewidth=1.0,
+             label=portafolio)
+    final = valor_portafolio[portafolio].iloc[-1]
+    eje.annotate(f"S/ {final:,.0f}", xy=(valor_portafolio.index[-1], final), xytext=(4, 0),
+                 textcoords="offset points", fontsize=7.2, color=TINTA, va="center", annotation_clip=False)
+eje.axhline(100, color=TINTA_2, linewidth=0.5)
+eje.set_ylabel("Valor de S/ 100 invertidos")
+eje.legend(loc="upper left", ncol=3, handlelength=3)
+eje_fechas(eje)
+fig.tight_layout()
+guardar_figura(fig, "figura9_portafolio",
+               "Fuente: elaboración propia con datos de BCRPData (IGBVL y tipo de cambio) y Yahoo Finance (BTC). Valor en "
+               "soles con pesos fijos rebalanceados diariamente (Tabla 10). Zona sombreada: subperiodo 2022-2025.")
 # ---------------------------------------------------------------------------
 # 14. Dashboard interactivo (HTML autónomo, funciona sin internet)
 # ---------------------------------------------------------------------------
